@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import typing as t
 import dataclasses
+import typing as t
 from pathlib import Path
 
 

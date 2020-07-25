@@ -1,13 +1,15 @@
-from jgrestic.subcommand import Subcommand
 import argparse
-import typing as t
-import subprocess
-import secrets
 import os
+import secrets
+import subprocess
+import typing as t
 from pathlib import Path
+
 import toml
-from jgrestic.restic_files import ResticFiles
+
 from jgrestic.commands import restic
+from jgrestic.restic_files import ResticFiles
+from jgrestic.subcommand import Subcommand
 
 
 class InitRepo(Subcommand):

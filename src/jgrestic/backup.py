@@ -1,12 +1,14 @@
-import typing as t
-from jgrestic.subcommand import Subcommand
 import argparse
-import toml
-import subprocess
 import os
+import subprocess
+import typing as t
 from pathlib import Path
-from jgrestic.restic_files import ResticFiles
+
+import toml
+
 from jgrestic.commands import restic
+from jgrestic.restic_files import ResticFiles
+from jgrestic.subcommand import Subcommand
 
 
 class Backup(Subcommand):

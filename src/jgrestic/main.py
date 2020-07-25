@@ -1,12 +1,13 @@
 import argparse
-from jgrestic.subcommand import register_subcommands, invoke_subcommand
-from jgrestic.init_repo import InitRepo
-from jgrestic.backup import Backup
 import sys
+
+from jgrestic.backup import Backup
+from jgrestic.init_repo import InitRepo
+from jgrestic.subcommand import invoke_subcommand, register_subcommands
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="JG restic setup")
+    parser = argparse.ArgumentParser(description="Restic backup tool")
     register_subcommands(
         parser, title="cmd", subcommands=[InitRepo(), Backup()],
     )
