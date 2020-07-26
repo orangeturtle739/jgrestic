@@ -29,13 +29,15 @@ add_custom_target(src_stamp
     ALL
     COMMAND ${DIRSTAMP} ${PROJECT_SOURCE_DIR}/src/jgrestic
     BYPRODUCTS ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+    VERBATIM
 )
 add_custom_command(
-    COMMAND ${BLACK} --check --diff .
+    COMMAND ${BLACK} --check --diff --exclude "" .
     COMMAND touch ${PROJECT_SOURCE_DIR}/src/black.stamp
     OUTPUT ${PROJECT_SOURCE_DIR}/src/black.stamp
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/src
     DEPENDS ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+    VERBATIM
 )
 add_custom_command(
     COMMAND ${ISORT} --check
@@ -43,6 +45,7 @@ add_custom_command(
     OUTPUT ${PROJECT_SOURCE_DIR}/src/isort.stamp
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/src
     DEPENDS ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+    VERBATIM
 )
 add_custom_command(
     COMMAND ${FLAKE8} --config=${PROJECT_SOURCE_DIR}/.flake8 .
@@ -50,6 +53,7 @@ add_custom_command(
     OUTPUT ${PROJECT_SOURCE_DIR}/src/flake8.stamp
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/src
     DEPENDS ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+    VERBATIM
 )
 add_custom_command(
     COMMAND ${MYPY} --config-file ${PROJECT_SOURCE_DIR}/.mypy.ini -p ${PROJECT_NAME}
@@ -57,6 +61,7 @@ add_custom_command(
     OUTPUT ${PROJECT_SOURCE_DIR}/src/mypy.stamp
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/src
     DEPENDS ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+    VERBATIM
 )
 
 add_custom_target(lint
@@ -66,6 +71,7 @@ add_custom_target(lint
         ${PROJECT_SOURCE_DIR}/src/isort.stamp
         ${PROJECT_SOURCE_DIR}/src/flake8.stamp
         ${PROJECT_SOURCE_DIR}/src/mypy.stamp
+    VERBATIM
 )
 
 add_custom_command(
@@ -80,11 +86,13 @@ add_custom_command(
         ${PROJECT_BINARY_DIR}/target
         ${PROJECT_SOURCE_DIR}/dist
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    VERBATIM
 )
 
 add_custom_target(build_python
     ALL
     DEPENDS ${PROJECT_SOURCE_DIR}/src/install.stamp
+    VERBATIM
 )
 
 add_custom_command(
@@ -98,18 +106,21 @@ add_custom_command(
         ${PROJECT_BINARY_DIR}/target
         ${PROJECT_SOURCE_DIR}/dist
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    VERBATIM
 )
 
 add_custom_target(develop
     DEPENDS
         ${PROJECT_SOURCE_DIR}/src/develop.stamp
         lint
+    VERBATIM
 )
 
 add_custom_target(format
-    COMMAND ${BLACK}
+    COMMAND ${BLACK} --exclude "" .
     COMMAND ${ISORT} --apply
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/src
+    VERBATIM
 )
 
 install(DIRECTORY ${PROJECT_BINARY_DIR}/target/
