@@ -52,7 +52,9 @@ add_custom_command(
     COMMAND touch ${PROJECT_SOURCE_DIR}/src/flake8.stamp
     OUTPUT ${PROJECT_SOURCE_DIR}/src/flake8.stamp
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/src
-    DEPENDS ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+    DEPENDS
+        ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+        ${PROJECT_SOURCE_DIR}/.flake8
     VERBATIM
 )
 add_custom_command(
@@ -60,7 +62,9 @@ add_custom_command(
     COMMAND touch ${PROJECT_SOURCE_DIR}/src/mypy.stamp
     OUTPUT ${PROJECT_SOURCE_DIR}/src/mypy.stamp
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/src
-    DEPENDS ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+    DEPENDS
+        ${PROJECT_SOURCE_DIR}/src/jgrestic.stamp
+        ${PROJECT_SOURCE_DIR}/.mypy.ini
     VERBATIM
 )
 

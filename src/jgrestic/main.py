@@ -1,22 +1,19 @@
-import argparse
-import sys
+import click
 
-from jgrestic.backup import Backup
-from jgrestic.init_repo import InitRepo
-from jgrestic.subcommand import invoke_subcommand, register_subcommands
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Restic backup tool")
-    register_subcommands(
-        parser, title="cmd", subcommands=[InitRepo(), Backup()],
-    )
-    args = parser.parse_args()
-    return invoke_subcommand("cmd", args)
+from jgrestic.backup import backup
+from jgrestic.enter import enter
+from jgrestic.init import init
 
 
-def wrapper() -> None:
-    try:
-        sys.exit(main())
-    except KeyboardInterrupt:
-        sys.exit(2)
+@click.group()
+@click.version_option()
+def main() -> None:
+    """
+    Restic backup tool.
+    """
+    pass
+
+
+main.add_command(backup)
+main.add_command(init)
+main.add_command(enter)

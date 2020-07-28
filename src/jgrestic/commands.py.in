@@ -1,5 +1,5 @@
 from pathlib import Path
 
 # fmt: off
-restic = Path("@RESTIC@") / "bin/restic"
+restic = Path("@RESTIC@")
 # fmt: on
