@@ -6,3 +6,5 @@ build
 dist
 *.stamp
 .envrc
+.direnv
+result
