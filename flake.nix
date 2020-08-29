@@ -9,7 +9,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        pydeps = with pkgs.python3Packages; [ toml setuptools ];
+        pydeps = with pkgs.python3Packages; [ toml setuptools click ];
         pybuilddeps = with pkgs.python3Packages; [
           black
           flake8
