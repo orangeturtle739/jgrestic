@@ -1,8 +1,9 @@
 from setuptools import find_packages, setup
+from pathlib import Path
 
 setup(
     name="jgrestic",
-    version="1.0.0",
+    version=(Path(__file__).parent / "VERSION").open().read().strip(),
     packages=find_packages("src"),
     package_dir={"": "src"},
     package_data={"": ["py.typed"]},

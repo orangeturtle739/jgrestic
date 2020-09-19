@@ -24,7 +24,7 @@
         '');
         jgrestic = pkgs.stdenv.mkDerivation rec {
           pname = "jgrestic";
-          version = "0.1.0";
+          version = pkgs.lib.removeSuffix "\n" (builtins.readFile ./VERSION);
           src = self;
           nativeBuildInputs = pybuilddeps ++ [
             pkgs.cmake

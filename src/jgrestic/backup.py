@@ -1,43 +1,27 @@
-import os
 import subprocess
-from pathlib import Path
+import typing as t
 
 import click
-import toml
 
+from jgrestic import config
 from jgrestic.commands import restic
-from jgrestic.restic_files import ResticFiles
 
 
 @click.command()
-@click.argument(
-    "root", type=click.Path(file_okay=False, dir_okay=True, exists=True, writable=True)
-)
-def backup(root: str) -> None:
+@click.argument("config_toml", type=click.File("r"))
+def backup(config_toml: t.TextIO) -> None:
     """
-    Initiates a backup to the to the given ROOT.
-
-    The configuration file is from ROOT/jgrestic.toml.
+    Initiates a backup using the given CONFIG_TOML.
     """
-    files = ResticFiles.from_root(Path(root))
-    src = Path(toml.load(files.config.open("r"))["src"])
-
-    env = {**os.environ, **files.env()}
+    c = config.load(config_toml)
+    click.secho(f"Running forget", fg="yellow")
     subprocess.run(
-        [
-            restic,
-            "forget",
-            "--keep-daily",
-            "7",
-            "--keep-weekly",
-            "4",
-            "--keep-monthly",
-            "12",
-            "--keep-yearly",
-            "10",
-        ],
+        [str(restic), "forget", "--prune"] + c.forget.args,
         check=True,
-        env=env,
+        env=c.extend_env(),
     )
-    subprocess.run([restic, "prune"], check=True, env=env)
-    subprocess.run([restic, "backup", src], check=True, env=env)
+    click.secho(f"Running backup", fg="yellow")
+    subprocess.run(
+        [str(restic), "backup"] + c.backup.args, check=True, env=c.extend_env()
+    )
+    click.secho(f"Done!", fg="green")

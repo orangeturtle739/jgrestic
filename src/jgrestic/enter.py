@@ -1,20 +1,18 @@
 import os
 import typing as t
-from pathlib import Path
 
 import click
 
-from jgrestic.restic_files import ResticFiles
+from jgrestic import config
+from jgrestic.commands import restic
 
 
 @click.command()
-@click.argument(
-    "root", type=click.Path(file_okay=False, dir_okay=True, exists=True, writable=True)
-)
+@click.argument("config_toml", type=click.File("r"))
 @click.argument("cmd", nargs=-1, required=True)
-def enter(root: str, cmd: t.List[str]) -> None:
+def enter(config_toml: t.TextIO, cmd: t.Tuple[str]) -> None:
     """
-    Runs a given CMD in the restic enviroment located at ROOT.
+    Runs a given CMD in the restic enviroment located defined by CONFIG_TOML.
 
     Executes (using exec, replacing the current process)
     the specified command with the restic environment
@@ -22,7 +20,9 @@ def enter(root: str, cmd: t.List[str]) -> None:
 
     This can be used to run manual restic commands:
 
-    jgrestic enter restic snapshots
+    jgrestic enter config.toml restic snapshots
     """
-    env = {**os.environ, **ResticFiles.from_root(Path(root)).env()}
-    os.execvpe(cmd[0], cmd, env)
+    c = config.load(config_toml)
+    if cmd[0] == "restic":
+        cmd = (str(restic), *cmd[1:])
+    os.execvpe(cmd[0], cmd, c.extend_env())

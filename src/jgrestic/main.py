@@ -2,7 +2,6 @@ import click
 
 from jgrestic.backup import backup
 from jgrestic.enter import enter
-from jgrestic.init import init
 
 
 @click.group()
@@ -15,5 +14,4 @@ def main() -> None:
 
 
 main.add_command(backup)
-main.add_command(init)
 main.add_command(enter)
