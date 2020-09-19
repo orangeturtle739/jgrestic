@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import dataclasses
+import json
 import os
 import typing as t
-
-import toml
 
 
 @dataclasses.dataclass
@@ -42,4 +41,4 @@ def dataclass_from_dict(klass: t.Type[T], dikt: t.Any) -> T:
 
 
 def load(data: t.TextIO) -> Config:
-    return dataclass_from_dict(Config, toml.load(data))
+    return dataclass_from_dict(Config, json.load(data))
