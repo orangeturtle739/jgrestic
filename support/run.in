@@ -2,4 +2,4 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-PATH=$PATH:$DIR/target/bin PYTHONPATH=$PYTHONPATH:$DIR/target/@SITEDIR@ exec "$@"
+PATH=$DIR/target/bin:$PATH PYTHONPATH=$DIR/target/@SITEDIR@:$PYTHONPATH exec "$@"
