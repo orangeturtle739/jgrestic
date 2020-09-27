@@ -6,9 +6,10 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   outputs = { self, nixpkgs, dirstamp, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+    flake-utils.lib.eachSystem
+    (flake-utils.lib.defaultSystems ++ [ "armv7l-linux" ]) (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs { inherit system; };
         pydeps = with pkgs.python3Packages; [ setuptools click ];
         pybuilddeps = with pkgs.python3Packages; [
           black
