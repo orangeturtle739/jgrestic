@@ -4,10 +4,11 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.03";
   inputs.dirstamp.url = "github:orangeturtle739/dirstamp";
   inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.unicmake.url = "github:orangeturtle739/unicmake";
+  # inputs.unicmake.url = "/home/jacob/Documents/MyStuff/projects/unicmake";
 
-  outputs = { self, nixpkgs, dirstamp, flake-utils }:
-    flake-utils.lib.eachSystem
-    (flake-utils.lib.defaultSystems ++ [ "armv7l-linux" ]) (system:
+  outputs = { self, nixpkgs, dirstamp, flake-utils, unicmake }:
+    flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
         pydeps = with pkgs.python3Packages; [ setuptools click ];
@@ -17,6 +18,7 @@
           isort
           mypy
           wrapPython
+          pytest
         ];
         mypy_hook = pkgs.makeSetupHook { } (pkgs.writeScript "mypy_hook" ''
           export MYPYPATH=$(toPythonPath "${
@@ -25,7 +27,8 @@
         '');
         jgrestic = pkgs.stdenv.mkDerivation rec {
           pname = "jgrestic";
-          version = pkgs.lib.removeSuffix "\n" (builtins.readFile ./VERSION);
+          version =
+            "0.2.2"; # pkgs.lib.removeSuffix "\n" (builtins.readFile ./VERSION);
           src = self;
           nativeBuildInputs = pybuilddeps ++ [
             pkgs.cmake
@@ -33,7 +36,7 @@
             pkgs.restic
             dirstamp.defaultPackage.${system}
           ];
-          buildInputs = [ mypy_hook ];
+          buildInputs = [ mypy_hook unicmake.defaultPackage.${system} ];
           propagatedBuildInputs = pydeps;
           postFixup = ''
             wrapPythonPrograms

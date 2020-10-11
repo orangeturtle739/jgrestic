@@ -1,8 +1,8 @@
 all: build/Makefile
-	make --directory=build -j$(shell nproc) develop
+	make --no-print-directory --directory=build -j$(shell nproc) develop
 
 format: build/Makefile
-	make --directory=build -j$(shell nproc) format
+	make --no-print-directory --directory=build -j$(shell nproc) format
 
 build/Makefile:
 	mkdir -p build
@@ -10,5 +10,5 @@ build/Makefile:
 
 .PHONY: clean
 clean:
-	test build/Makefile && make --directory=build clean
+	test build/Makefile && make --no-print-directory --directory=build clean
 	rm -rf build
