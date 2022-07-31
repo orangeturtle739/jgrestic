@@ -30,11 +30,6 @@
           wrapPython
           pytest
         ];
-        mypy_hook = pkgs.makeSetupHook { } (pkgs.writeScript "mypy_hook" ''
-          export MYPYPATH=$(toPythonPath "${
-            builtins.concatStringsSep " " pydeps
-          }")
-        '');
         jgrestic = pkgs.stdenv.mkDerivation rec {
           pname = "jgrestic";
           version =
@@ -46,7 +41,7 @@
             pkgs.restic
             dirstamp.defaultPackage.${system}
           ];
-          buildInputs = [ mypy_hook unicmake.defaultPackage.${system} ];
+          buildInputs = [ unicmake.defaultPackage.${system} ];
           propagatedBuildInputs = pydeps;
           postFixup = ''
             wrapPythonPrograms

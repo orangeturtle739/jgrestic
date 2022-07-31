@@ -27,4 +27,4 @@ def init(config_json: t.TextIO) -> None:
         check=True,
         env=c.extend_env(),
     )
-    click.secho(f"Done!", fg="green")
+    click.secho("Done!", fg="green")

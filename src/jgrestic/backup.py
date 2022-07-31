@@ -27,20 +27,20 @@ def backup(config_json: t.TextIO) -> None:
     #   1)  It is more than 30 minutes old
     #   2)  It was created on the same host as restic unlock is currently running on,
     #       and the process that created the lock cannot be reached using a SIGHUP signal.
-    click.secho(f"Running unlock", fg="yellow")
+    click.secho("Running unlock", fg="yellow")
     subprocess.run(
         [str(restic), "unlock"],
         check=True,
         env=c.extend_env(),
     )
-    click.secho(f"Running forget", fg="yellow")
+    click.secho("Running forget", fg="yellow")
     subprocess.run(
         [str(restic), "forget", "--prune"] + c.forget.args,
         check=True,
         env=c.extend_env(),
     )
-    click.secho(f"Running backup", fg="yellow")
+    click.secho("Running backup", fg="yellow")
     subprocess.run(
         [str(restic), "backup"] + c.backup.args, check=True, env=c.extend_env()
     )
-    click.secho(f"Done!", fg="green")
+    click.secho("Done!", fg="green")
