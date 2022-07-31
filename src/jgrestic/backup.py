@@ -29,7 +29,9 @@ def backup(config_json: t.TextIO) -> None:
     #       and the process that created the lock cannot be reached using a SIGHUP signal.
     click.secho(f"Running unlock", fg="yellow")
     subprocess.run(
-        [str(restic), "unlock"], check=True, env=c.extend_env(),
+        [str(restic), "unlock"],
+        check=True,
+        env=c.extend_env(),
     )
     click.secho(f"Running forget", fg="yellow")
     subprocess.run(

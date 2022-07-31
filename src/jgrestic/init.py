@@ -18,9 +18,13 @@ def init(config_json: t.TextIO) -> None:
     """
     c = config.load(config_json)
     subprocess.run(
-        [str(restic), "init"], check=True, env=c.extend_env(),
+        [str(restic), "init"],
+        check=True,
+        env=c.extend_env(),
     )
     subprocess.run(
-        [str(restic), "key", "add"], check=True, env=c.extend_env(),
+        [str(restic), "key", "add"],
+        check=True,
+        env=c.extend_env(),
     )
     click.secho(f"Done!", fg="green")

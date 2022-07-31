@@ -1,14 +1,24 @@
 {
   description = "A tool for running restic backups";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.03";
-  inputs.dirstamp.url = "github:orangeturtle739/dirstamp";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.unicmake.url = "github:orangeturtle739/unicmake";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+  inputs.dirstamp = {
+    url = "github:orangeturtle739/dirstamp";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.flake-utils = {
+    url = "github:numtide/flake-utils";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.unicmake = {
+    url = "github:orangeturtle739/unicmake";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   # inputs.unicmake.url = "/home/jacob/Documents/MyStuff/projects/unicmake";
 
   outputs = { self, nixpkgs, dirstamp, flake-utils, unicmake }:
-    flake-utils.lib.eachDefaultSystem (system:
+    flake-utils.lib.eachSystem [ "aarch64-linux" "i686-linux" "x86_64-linux" ]
+    (system:
       let
         pkgs = import nixpkgs { inherit system; };
         pydeps = with pkgs.python3Packages; [ setuptools click ];
