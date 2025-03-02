@@ -26,7 +26,14 @@ class Forget:
     args: t.List[str]
 
 
-T = t.TypeVar("T")
+if t.TYPE_CHECKING:
+    from _typeshed import DataclassInstance
+
+    T = t.TypeVar("T", bound=DataclassInstance)
+else:
+    T = t.TypeVar(
+        "T",
+    )
 
 
 # https://gist.github.com/gatopeich/1efd3e1e4269e1e98fae9983bb914f22

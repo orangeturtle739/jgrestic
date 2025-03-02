@@ -1,7 +1,7 @@
 {
   description = "A tool for running restic backups";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
   inputs.dirstamp = {
     url = "github:orangeturtle739/dirstamp";
     inputs.nixpkgs.follows = "nixpkgs";
