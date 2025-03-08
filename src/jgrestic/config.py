@@ -11,9 +11,17 @@ class Config:
     env: t.Dict[str, str]
     backup: Backup
     forget: Forget
+    secret_env_files: t.List[str] = dataclasses.field(default_factory=list)
+
+    def read_secret_env_files(self) -> t.Dict[str, str]:
+        result = {}
+        for secret_env_file in self.secret_env_files:
+            with open(secret_env_file, "r") as f:
+                result.update(json.load(f))
+        return result
 
     def extend_env(self) -> t.Dict[str, str]:
-        return {**os.environ, **self.env}
+        return {**os.environ, **self.env, **self.read_secret_env_files()}
 
 
 @dataclasses.dataclass
